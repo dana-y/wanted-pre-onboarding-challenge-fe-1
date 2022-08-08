@@ -16,22 +16,32 @@ const Title = styled.h3`
 const AddBtn = styled.button`
   /* height: auto; */
 `;
-const List = ({ setAddStatus }) => {
+const ListUL = styled.ul`
+  padding: 1rem;
+  font-size: 1.3rem;
+  flex-direction: column;
+  display: flex;
+  gap: 1rem;
+`;
+
+const List = ({ setAddStatus, addStatus, data }) => {
   return (
     <Wrap>
       <ListHeader>
         <Title>할 일 목록</Title>
         <AddBtn
           onClick={() => {
-            setAddStatus(true);
+            setAddStatus((prev) => !prev);
           }}
         >
-          +
+          {addStatus ? "취소" : "추가"}
         </AddBtn>
       </ListHeader>
-      <ul>
-        <li>빨래하기</li>
-      </ul>
+      <ListUL>
+        {data?.data.map((item) => (
+          <li key={item.id}>{item.title}</li>
+        ))}
+      </ListUL>
     </Wrap>
   );
 };

@@ -49,7 +49,6 @@ const SignUpModal = ({ showModal, setShowModal }) => {
         password: pwdValue,
       });
       window.alert(res.data.message);
-      localStorage.setItem("token", res.data.token);
       setShowModal(false);
       navigate("/");
     } catch (error) {
@@ -67,15 +66,16 @@ const SignUpModal = ({ showModal, setShowModal }) => {
             type="text"
             placeholder="이메일을 입력해주세요"
             onInput={onInputEmail}
-          ></input>
+          />
           <p>{!REX.test(emailValue) && "잘못된 이메일 형식입니다."}</p>
           <input
             type="password"
             placeholder="비밀번호를 입력해주세요"
             onInput={onInputPwd}
-          ></input>
+          />
           <p>{pwdValue.length < 8 && "비밀번호를 8자 이상 입력해주세요"}</p>
           <button onClick={signUpSubmit}>가입</button>
+          <button onClick={() => setShowModal(false)}>취소</button>
         </ModalWrapper>
       </Overlay>
     </div>

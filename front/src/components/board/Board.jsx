@@ -1,4 +1,6 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { BASE_URL } from "../../constants";
 import styled from "styled-components";
 import Detail from "../detail/Detail";
 import List from "../list/List";
@@ -14,11 +16,35 @@ const FlexWrap = styled.article`
 
 const Board = () => {
   const [addStatus, setAddStatus] = useState(false);
+  const TOKEN = localStorage.getItem("token");
+  const [data, setData] = useState();
+
+  const getList = async () => {
+    try {
+      const res = await axios.get(BASE_URL + "/todos", {
+        headers: {
+          Authorization: TOKEN,
+        },
+      });
+      console.log(res);
+      setData(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
 
   return (
     <FlexWrap>
-      <List setAddStatus={setAddStatus} />
-      <Detail setAddStatus={setAddStatus} addStatus={addStatus} />
+      <List data={data} setAddStatus={setAddStatus} addStatus={addStatus} />
+      <Detail
+        getList={getList}
+        setAddStatus={setAddStatus}
+        addStatus={addStatus}
+      />
     </FlexWrap>
   );
 };

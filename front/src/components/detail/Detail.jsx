@@ -1,4 +1,8 @@
+import { useState } from "react";
+import axios from "axios";
 import styled, { css } from "styled-components";
+import { BASE_URL } from "../../constants";
+
 const Wrap = styled.div`
   width: 50%;
   border-left: solid 1px lightgray;
@@ -37,16 +41,54 @@ const ContentsInput = styled.textarea`
 
   resize: none;
 `;
-const Detail = ({ addStatus, setAddStatus }) => {
+const Detail = ({ addStatus, setAddStatus, getList }) => {
+  const [titValue, setTitValue] = useState();
+  const [ctntValue, setCtntTitValue] = useState();
+  const TOKEN = localStorage.getItem("token");
+
+  const onInputTit = (e) => {
+    setTitValue(e.target.value);
+  };
+
+  const onInputCtnt = (e) => {
+    setCtntTitValue(e.target.value);
+  };
+  const addList = async () => {
+    try {
+      const res = await axios.post(
+        BASE_URL + "/todos",
+        {
+          title: titValue,
+          content: ctntValue,
+        },
+        {
+          headers: {
+            Authorization: TOKEN,
+          },
+        }
+      );
+      console.log(res);
+      setTitValue("");
+      setCtntTitValue("");
+      getList();
+      setAddStatus(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Wrap>
       <DetailHeader>
         {addStatus ? (
           <>
-            <TitInput placeholder="제목을 입력해주세요"></TitInput>
+            <TitInput
+              onInput={onInputTit}
+              placeholder="제목을 입력해주세요"
+              value={titValue}
+            ></TitInput>
             <div>
-              <button>저장</button>
-              <button onClick={() => setAddStatus(false)}>취소</button>
+              <button onClick={addList}>저장</button>
             </div>
           </>
         ) : (
@@ -55,7 +97,11 @@ const Detail = ({ addStatus, setAddStatus }) => {
       </DetailHeader>
       <ContentsWrap>
         {addStatus ? (
-          <ContentsInput placeholder="내용을 입력해주세요"></ContentsInput>
+          <ContentsInput
+            onInput={onInputCtnt}
+            placeholder="내용을 입력해주세요"
+            value={ctntValue}
+          ></ContentsInput>
         ) : (
           <Contents>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit

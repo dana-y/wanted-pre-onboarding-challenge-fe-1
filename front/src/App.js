@@ -9,11 +9,12 @@ import {
   useLocation,
 } from "react-router-dom";
 import Login from "./page/Login";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
+
 const ResetCss = createGlobalStyle`
   ${reset}
   html {
-    font-size: 10px;
+    font-size: 14px;
   }
   &.hide {
     display:none;
@@ -25,23 +26,29 @@ function App() {
 
   const [isLoginState, setIsLoginState] = useState(false);
   const location = useLocation();
+
   useEffect(() => {
-    setIsLoginState(() => {
-      return TOKEN ? true : false;
-    });
-  }, [location]);
+    setIsLoginState(Boolean(TOKEN));
+  }, []);
+
+  console.log(isLoginState);
 
   return (
     <>
       <ResetCss />
       <Routes>
-        <Route path="/auth" element={<Login />} />
+        {/* <Route path="auth" element={<Login />} />
         <Route
           path="/"
           element={
             isLoginState ? <Main /> : <Navigate replace={true} to="/auth" />
           }
-        />
+        /> */}
+        {isLoginState ? (
+          <Route path="/" element={<Main />} />
+        ) : (
+          <Route path="/auth" element={<Login />} />
+        )}
       </Routes>
     </>
   );
