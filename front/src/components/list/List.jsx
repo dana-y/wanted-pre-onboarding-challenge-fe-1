@@ -8,7 +8,7 @@ const ListHeader = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 1rem;
-  border-bottom: solid 1px lightgray;
+  border-bottom: solid 1px navy;
 `;
 const Title = styled.h3`
   font-size: 2rem;
@@ -17,11 +17,18 @@ const AddBtn = styled.button`
   /* height: auto; */
 `;
 const ListUL = styled.ul`
-  padding: 1rem;
   font-size: 1.3rem;
   flex-direction: column;
   display: flex;
-  gap: 1rem;
+`;
+
+const TodoLi = styled.li`
+  padding: 1rem;
+  border-bottom: solid 1px lightgray;
+  cursor: pointer;
+  &:hover {
+    background-color: lightgrey;
+  }
 `;
 
 const List = ({
@@ -30,10 +37,12 @@ const List = ({
   data,
   setDetailTit,
   setDetailTxt,
+  setClickedId,
 }) => {
   const showDetail = (event) => {
     setDetailTit(event.target.innerText);
     const key = event.target.textContent.slice(0, 21);
+    setClickedId(key);
     const txt = data.data.filter((e) => e.id === key)[0]["content"];
     setDetailTxt(txt);
   };
@@ -51,11 +60,11 @@ const List = ({
         </AddBtn>
       </ListHeader>
       <ListUL>
-        {data.data.map((item, i) => (
-          <li onClick={showDetail} key={i}>
+        {data?.data.map((item, i) => (
+          <TodoLi onClick={showDetail} key={i}>
             <span className="hide">{item.id}</span>
             {item.title}
-          </li>
+          </TodoLi>
         ))}
       </ListUL>
     </Wrap>

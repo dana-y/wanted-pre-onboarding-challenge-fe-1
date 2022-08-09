@@ -5,14 +5,14 @@ import { BASE_URL } from "../../constants";
 
 const Wrap = styled.div`
   width: 50%;
-  border-left: solid 1px lightgray;
+  border-left: solid 1px navy;
 `;
 const DetailHeader = styled.div`
   height: 3rem;
   display: flex;
   justify-content: space-between;
   padding: 1rem;
-  border-bottom: solid 1px lightgray;
+  border-bottom: solid 1px navy;
 `;
 const Title = styled.h3`
   font-size: 2rem;
@@ -45,12 +45,15 @@ const Detail = ({
   data,
   addStatus,
   setAddStatus,
-  getList,
   detailTit,
   detailTxt,
+  clickedId,
+  refresh,
+  setCtntTitValue,
+  getList,
 }) => {
   const [titValue, setTitValue] = useState();
-  const [ctntValue, setCtntTitValue] = useState();
+  const [ctntValue, setCtntValue] = useState();
   const TOKEN = localStorage.getItem("token");
 
   const onInputTit = (e) => {
@@ -58,7 +61,7 @@ const Detail = ({
   };
 
   const onInputCtnt = (e) => {
-    setCtntTitValue(e.target.value);
+    setCtntValue(e.target.value);
   };
 
   const addList = async () => {
@@ -75,11 +78,25 @@ const Detail = ({
           },
         }
       );
-      console.log(res);
+      console.log("addList");
       setTitValue("");
-      setCtntTitValue("");
+      setCtntValue("");
       getList();
       setAddStatus(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteList = async () => {
+    try {
+      const res = await axios.delete(BASE_URL + `/todos/${clickedId}`, {
+        headers: {
+          Authorization: TOKEN,
+        },
+      });
+      refresh();
+      console.log("deleteList");
     } catch (error) {
       console.log(error);
     }
@@ -94,13 +111,15 @@ const Detail = ({
               onInput={onInputTit}
               placeholder="제목을 입력해주세요"
               value={titValue}
+              required
             ></TitInput>
-            <div>
-              <button onClick={addList}>저장</button>
-            </div>
+            <button onClick={addList}>저장</button>
           </>
         ) : (
-          <Title>{detailTit}</Title>
+          <>
+            <Title>{detailTit}</Title>
+            <button onClick={deleteList}>삭제</button>
+          </>
         )}
       </DetailHeader>
       <ContentsWrap>

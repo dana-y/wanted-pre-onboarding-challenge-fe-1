@@ -10,7 +10,7 @@ const FlexWrap = styled.article`
   width: 80rem;
   height: 40rem;
   margin: 50px auto;
-  border: solid 1px lightgray;
+  border: solid 1px navy;
   border-radius: 10px;
 `;
 
@@ -18,6 +18,7 @@ const Board = () => {
   const [addStatus, setAddStatus] = useState(false);
   const [detailTit, setDetailTit] = useState("");
   const [detailTxt, setDetailTxt] = useState([]);
+  const [clickedId, setClickedId] = useState("");
   const TOKEN = localStorage.getItem("token");
   const [data, setData] = useState();
 
@@ -29,11 +30,16 @@ const Board = () => {
           Authorization: TOKEN,
         },
       });
-      console.log(res);
+      console.log("getList");
       setData(res.data);
     } catch (error) {
       console.log(error);
     }
+  };
+  const refresh = () => {
+    setDetailTit("");
+    setDetailTxt("");
+    getList();
   };
 
   useEffect(() => {
@@ -48,6 +54,7 @@ const Board = () => {
         addStatus={addStatus}
         setDetailTit={setDetailTit}
         setDetailTxt={setDetailTxt}
+        setClickedId={setClickedId}
       />
       <Detail
         data={data}
@@ -56,6 +63,8 @@ const Board = () => {
         addStatus={addStatus}
         detailTit={detailTit}
         detailTxt={detailTxt}
+        clickedId={clickedId}
+        refresh={refresh}
       />
     </FlexWrap>
   );
