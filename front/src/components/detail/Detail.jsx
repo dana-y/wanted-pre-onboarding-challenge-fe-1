@@ -41,7 +41,14 @@ const ContentsInput = styled.textarea`
 
   resize: none;
 `;
-const Detail = ({ addStatus, setAddStatus, getList }) => {
+const Detail = ({
+  data,
+  addStatus,
+  setAddStatus,
+  getList,
+  detailTit,
+  detailTxt,
+}) => {
   const [titValue, setTitValue] = useState();
   const [ctntValue, setCtntTitValue] = useState();
   const TOKEN = localStorage.getItem("token");
@@ -53,6 +60,7 @@ const Detail = ({ addStatus, setAddStatus, getList }) => {
   const onInputCtnt = (e) => {
     setCtntTitValue(e.target.value);
   };
+
   const addList = async () => {
     try {
       const res = await axios.post(
@@ -92,7 +100,7 @@ const Detail = ({ addStatus, setAddStatus, getList }) => {
             </div>
           </>
         ) : (
-          <Title>빨래하기</Title>
+          <Title>{detailTit}</Title>
         )}
       </DetailHeader>
       <ContentsWrap>
@@ -103,12 +111,7 @@ const Detail = ({ addStatus, setAddStatus, getList }) => {
             value={ctntValue}
           ></ContentsInput>
         ) : (
-          <Contents>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit
-            fugit id error quae consequatur dolorum maiores nobis, ab molestiae
-            fuga nihil, in aliquid, ipsum eos illum suscipit? Obcaecati, quae
-            quod.
-          </Contents>
+          <Contents>{detailTxt}</Contents>
         )}
       </ContentsWrap>
     </Wrap>

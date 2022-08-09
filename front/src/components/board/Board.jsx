@@ -16,9 +16,12 @@ const FlexWrap = styled.article`
 
 const Board = () => {
   const [addStatus, setAddStatus] = useState(false);
+  const [detailTit, setDetailTit] = useState("");
+  const [detailTxt, setDetailTxt] = useState([]);
   const TOKEN = localStorage.getItem("token");
   const [data, setData] = useState();
 
+  // useEffect(() => {}, [detailTit]);
   const getList = async () => {
     try {
       const res = await axios.get(BASE_URL + "/todos", {
@@ -39,11 +42,20 @@ const Board = () => {
 
   return (
     <FlexWrap>
-      <List data={data} setAddStatus={setAddStatus} addStatus={addStatus} />
+      <List
+        data={data}
+        setAddStatus={setAddStatus}
+        addStatus={addStatus}
+        setDetailTit={setDetailTit}
+        setDetailTxt={setDetailTxt}
+      />
       <Detail
+        data={data}
         getList={getList}
         setAddStatus={setAddStatus}
         addStatus={addStatus}
+        detailTit={detailTit}
+        detailTxt={detailTxt}
       />
     </FlexWrap>
   );

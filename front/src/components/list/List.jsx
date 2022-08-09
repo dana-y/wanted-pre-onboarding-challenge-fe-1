@@ -24,7 +24,20 @@ const ListUL = styled.ul`
   gap: 1rem;
 `;
 
-const List = ({ setAddStatus, addStatus, data }) => {
+const List = ({
+  setAddStatus,
+  addStatus,
+  data,
+  setDetailTit,
+  setDetailTxt,
+}) => {
+  const showDetail = (event) => {
+    setDetailTit(event.target.innerText);
+    const key = event.target.textContent.slice(0, 21);
+    const txt = data.data.filter((e) => e.id === key)[0]["content"];
+    setDetailTxt(txt);
+  };
+
   return (
     <Wrap>
       <ListHeader>
@@ -38,8 +51,11 @@ const List = ({ setAddStatus, addStatus, data }) => {
         </AddBtn>
       </ListHeader>
       <ListUL>
-        {data?.data.map((item) => (
-          <li key={item.id}>{item.title}</li>
+        {data.data.map((item, i) => (
+          <li onClick={showDetail} key={i}>
+            <span className="hide">{item.id}</span>
+            {item.title}
+          </li>
         ))}
       </ListUL>
     </Wrap>
