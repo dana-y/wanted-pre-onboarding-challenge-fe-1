@@ -49,7 +49,6 @@ const Detail = ({
   detailTxt,
   clickedId,
   refresh,
-  setCtntTitValue,
   getList,
 }) => {
   const [titValue, setTitValue] = useState();
@@ -118,7 +117,10 @@ const Detail = ({
         ) : (
           <>
             <Title>{detailTit}</Title>
-            <button onClick={deleteList}>삭제</button>
+            <div>
+              <button>수정</button>
+              <button onClick={deleteList}>삭제</button>
+            </div>
           </>
         )}
       </DetailHeader>

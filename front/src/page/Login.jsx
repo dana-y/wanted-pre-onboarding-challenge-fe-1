@@ -33,7 +33,7 @@ const Login = () => {
       localStorage.setItem("token", res.data.token);
       navigate("/");
     } catch (error) {
-      window.alert(error.response.data.details);
+      window.alert(error.response.data);
       console.log(error);
     }
   };

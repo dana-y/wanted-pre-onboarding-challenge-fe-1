@@ -1,15 +1,9 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 import Main from "./page/Main";
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-} from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Login from "./page/Login";
-import { useEffect, useState, useLayoutEffect } from "react";
+import { useEffect, useState } from "react";
 
 const ResetCss = createGlobalStyle`
   ${reset}
@@ -25,9 +19,10 @@ function App() {
   const TOKEN = localStorage.getItem("token");
 
   const [isLoginState, setIsLoginState] = useState(false);
-  const location = useLocation();
+  // const location = useLocation();
 
   useEffect(() => {
+    console.log(isLoginState);
     setIsLoginState(Boolean(TOKEN));
   }, []);
 
@@ -37,18 +32,18 @@ function App() {
     <>
       <ResetCss />
       <Routes>
-        {/* <Route path="auth" element={<Login />} />
+        <Route path="auth" element={<Login />} />
         <Route
           path="/"
           element={
             isLoginState ? <Main /> : <Navigate replace={true} to="/auth" />
           }
-        /> */}
-        {isLoginState ? (
-          <Route path="/" element={<Main />} />
+        />
+        {/* {isLoginState ? (
+          <Route path="/main" element={<Main />} />
         ) : (
           <Route path="/auth" element={<Login />} />
-        )}
+        )} */}
       </Routes>
     </>
   );
